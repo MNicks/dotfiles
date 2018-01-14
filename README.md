@@ -14,7 +14,7 @@ Install
 
     chsh -s $(which zsh)
      
-### Clone basis (Thoughbot)[dotfiles](https://github.com/thoughtbot/dotfiles) to your laptop
+### Clone basis (Thoughbot) [dotfiles](https://github.com/thoughtbot/dotfiles) to your laptop
 
     git clone git://github.com/thoughtbot/dotfiles.git ~/dotfiles
 
@@ -31,7 +31,7 @@ Install
 
     mkdir ~/dotfiles-local
     cd dotfiles-local
-    git clone git://github.com/MNicks/dotfiles.git
+    git clone --recurse-submodules git://github.com/MNicks/dotfiles.git
 
 ### Install the dotfiles:
 
