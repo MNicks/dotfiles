@@ -10,20 +10,24 @@ dotfiles. For details see [Thoughtbot dotfiles](https://github.com/thoughtbot/do
 Install
 ------------
 
-Set zsh as your login shell:
+# Set zsh as your login shell:
 
      chsh -s $(which zsh)
      
-Clone basis (Thoughbot)[dotfiles](https://github.com/thoughtbot/dotfiles) to your laptop
+# Clone basis (Thoughbot)[dotfiles](https://github.com/thoughtbot/dotfiles) to your laptop
 
      git clone git://github.com/thoughtbot/dotfiles.git ~/dotfiles
 
-Install rcm:
+# Install [Oh My Zsh](https://github.com/robbyrussell/oh-my-zsh)
+
+    sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+
+# Install rcm:
 
      brew tap thoughtbot/formulae
      brew install rcm
 
-Clone custom dotfiles (this repo) to your laptop
+# Clone custom dotfiles (this repo) to your laptop
 
     mkdir ~/dotfiles-local
     cd dotfiles-local
