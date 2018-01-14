@@ -12,11 +12,11 @@ Install
 
 ### Set zsh as your login shell:
 
-     chsh -s $(which zsh)
+    chsh -s $(which zsh)
      
 ### Clone basis (Thoughbot)[dotfiles](https://github.com/thoughtbot/dotfiles) to your laptop
 
-     git clone git://github.com/thoughtbot/dotfiles.git ~/dotfiles
+    git clone git://github.com/thoughtbot/dotfiles.git ~/dotfiles
 
 ### Install [Oh My Zsh](https://github.com/robbyrussell/oh-my-zsh)
 
