@@ -1,65 +1,38 @@
+# dotfiles
 
+This is a companion repo to [thoughtbot/dotfiles][1] including an install script for oh-my-zsh and for thoughtbot's dotfiles. It is heavily inspired by [Evie's dotfiles](https://github.com/webel/dotfiles)
 
+## Includes
+- Install script for `thoughtbot/dotfiles`
+- config for zshrc (see `thoughtbot/dotfiles` for description on how they treat local dotfiles)
+  - this config is basically the default created by `oh-my-zsh`, although with these plugins: `git` `docker` `brew` `docker-comp` `docker` `httpie` `node` `npm` `osx` `sudo` `s` `sh-agent`
 
+## Install
+- clone the repo
 
-(Thoughtbot) dotfiles customization
-====================================
-[Thoughtbot dotfiles](https://github.com/thoughtbot/dotfiles) will used as basis and afterwards extended by this custom
-dotfiles. For details see [Thoughtbot dotfiles](https://github.com/thoughtbot/dotfiles) Github repo.
+      > git clone --recurse-submodules https://github.com/MNicks/dotfiles.git ~/dotfiles-local
 
-Install
-------------
+- run `INSTALL/install.sh`
+      > . ~/dotfiles-local/INSTALL/install.sh
 
-### Set zsh as your login shell:
+  + sets default shell to `zsh`
+  + installs `oh-my-zsh`
+  + installs brew if not present
+  + clones Github repo [`thoughtbot/dotfiles`][1] into `~/dotfiles`
+  + install `rcrc` (for `thoughtbot/dotfiles`)
+  + set `RCRC` env and runs `rcup` (for `thoughtbot/dotfiles` aswell as the linking of these local dotfiles)
 
-    chsh -s $(which zsh)
-     
-### Clone basis (Thoughbot) [dotfiles](https://github.com/thoughtbot/dotfiles) to your laptop
+## Links
+- [thoughtbot/dotfiles][1]
 
-    git clone git://github.com/thoughtbot/dotfiles.git ~/dotfiles
+#### ZSH
+- [Powerline patched fonts][3]
+- [Agnoster theme][4]
+- [powerlevel9k theme][5]
+- [Install latest ZSH with brew][6]
 
-### Install [Oh My Zsh](https://github.com/robbyrussell/oh-my-zsh)
-
-    sh -c "$(curl -fsSL https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
-
-### Install rcm:
-
-     brew tap thoughtbot/formulae
-     brew install rcm
-
-### Clone custom dotfiles (this repo) to your laptop
-
-    mkdir ~/dotfiles-local
-    cd dotfiles-local
-    git clone --recurse-submodules git://github.com/MNicks/dotfiles.git
-
-### Install the dotfiles:
-
-    env RCRC=$HOME/dotfiles/rcrc rcup
-
-After the initial installation, you can run `rcup` without the one-time variable
-`RCRC` being set (`rcup` will symlink the repo's `rcrc` to `~/.rcrc` for future
-runs of `rcup`). [See
-example](https://github.com/thoughtbot/dotfiles/blob/master/rcrc).
-
-This command will create symlinks for config files in your home directory.
-Setting the `RCRC` environment variable tells `rcup` to use standard
-configuration options:
-
-* Exclude the `README.md` and `LICENSE` files, which are part of
-  the `dotfiles` repository but do not need to be symlinked in.
-* Give precedence to personal overrides which by default are placed in
-  `~/dotfiles-local`
-* Please configure the `rcrc` file if you'd like to make personal
-  overrides in a different directory
-  
-Update
-------
-
-From time to time you should pull down any updates to these dotfiles, and run
-
-    rcup
-
-to link any new files and install new vim plugins. **Note** You _must_ run
-`rcup` after pulling to ensure that all files in plugins are properly installed,
-but you can safely run `rcup` multiple times so update early and update often!
+[1]:https://github.com/thoughtbot/dotfiles
+[3]:https://github.com/powerline/fonts
+[4]:https://github.com/agnoster/agnoster-zsh-theme
+[5]:https://github.com/bhilburn/powerlevel9k
+[6]:https://rick.cogley.info/post/use-homebrew-zsh-instead-of-the-osx-default/

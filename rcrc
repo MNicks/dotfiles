@@ -1,0 +1,2 @@
+EXCLUDES="README.md LICENSE INSTALL oh-my-zsh"
+DOTFILES_DIRS="$HOME/dotfiles-local $HOME/dotfiles"

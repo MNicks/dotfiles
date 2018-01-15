@@ -1,0 +1,5 @@
+oh-my-zsh
+node_modules
+
+# Don't ignore gitignore
+!.gitignore
