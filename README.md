@@ -5,7 +5,7 @@ This is a companion repo to [thoughtbot/dotfiles][1] including an install script
 ## Includes
 - Install script for `thoughtbot/dotfiles`
 - config for zshrc (see `thoughtbot/dotfiles` for description on how they treat local dotfiles)
-  - this config is basically the default created by `oh-my-zsh`, although with these plugins: `git` `docker` `brew` `docker-comp` `docker` `httpie` `node` `npm` `osx` `sudo` `s` `sh-agent`
+  - this config is basically the default created by `oh-my-zsh`, although with these plugins: `git` `docker` `docker-comp` `docker` `httpie` `node` `npm` `osx` `sudo`
 
 ## Install
 - clone the repo

@@ -45,7 +45,7 @@ DISABLE_AUTO_UPDATE="true"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git httpie docker docker-compose history history-substring-search node npm osx brew sudo ssh-agent zsh-autosuggestions)
+plugins=(git httpie docker docker-compose history history-substring-search node npm osx sudo zsh-autosuggestions)
 
 # User configuration
 

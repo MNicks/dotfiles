@@ -1,5 +1,7 @@
 # Fetch and install oh-my-zsh
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+# Install 'powerlevel9k' theme for use in Oh-My-Zsh, clone this repository into your OMZ custom/themes directory.
+git clone https://github.com/bhilburn/powerlevel9k.git ~/.oh-my-zsh/custom/themes/powerlevel9k
 # Clone thoughtbot/dotfiles into home
 git clone git://github.com/thoughtbot/dotfiles.git ~/dotfiles
 
