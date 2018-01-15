@@ -3,7 +3,8 @@
 [user]
 	name = Markus Nicks
 	email = markus.nicks@gmail.com
-
+[credential]
+  helper = osxkeychain
 [alias]
     lg = !"git lg1"
     lg1 = !"git lg1-specific --all"
