@@ -13,6 +13,13 @@
 #
 # @author Jeff Geerling, 2014
 
+function CFPreferencesAppSynchronize() {
+    python - <<END
+from Foundation import CFPreferencesAppSynchronize
+CFPreferencesAppSynchronize('$1')
+END
+}
+
 # Warn that some commands will not be run if the script is not run as root.
 if [[ $EUID -ne 0 ]]; then
   RUN_AS_ROOT=false
@@ -73,6 +80,17 @@ defaults write NSGlobalDomain NSAutomaticQuoteSubstitutionEnabled -bool false
 # Disable smart dashes as they’re annoying when typing code
 defaults write NSGlobalDomain NSAutomaticDashSubstitutionEnabled -bool false
 
+# Locale
+defaults write NSGlobalDomain AppleLocale -string "de_DE"
+defaults write NSGlobalDomain AppleMeasurementUnits -string "Centimeters"
+defaults write NSGlobalDomain AppleMetricUnits -bool true
+
+# 24-Hour Time
+defaults write NSGlobalDomain AppleICUForce12HourTime -bool false
+
+# Turn off text smoothing for font sizes
+defaults write NSGlobalDomain AppleAntiAliasingThreshold -int 4
+
 # Set background to dark-grey color
 sqlite3 ~/Library/Application\ Support/Dock/desktoppicture.db "update data set value = '/Library/Desktop Pictures/Solid Colors/Solid Gray Dark.png'"
 
@@ -127,6 +145,12 @@ defaults write NSGlobalDomain ApplePressAndHoldEnabled -bool false
 # Set a blazingly fast keyboard repeat rate, and make it happen more quickly.
 defaults write NSGlobalDomain InitialKeyRepeat -int 20
 defaults write NSGlobalDomain KeyRepeat -int 1
+
+# Double-click a window's title bar to minimize
+defaults write NSGlobalDomain AppleMiniaturizeOnDoubleClick -bool false
+
+# Use smooth scrolling
+defaults write NSGlobalDomain AppleScrollAnimationEnabled -bool true
 
 # Disable auto-correct
 defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
@@ -245,6 +269,9 @@ defaults write com.apple.finder FXPreferredViewStyle -string "clmv"
 # Show the ~/Library folder
 chflags nohidden ~/Library
 
+# Don't show the ~/bin directory
+chflags hidden ~/bin
+
 # Remove Dropbox’s green checkmark icons in Finder
 # file=/Applications/Dropbox.app/Contents/Resources/emblem-dropbox-uptodate.icns
 # [ -e "${file}" ] && mv -f "${file}" "${file}.bak"
@@ -256,6 +283,8 @@ defaults write com.apple.finder FXInfoPanesExpanded -dict \
   OpenWith -bool true \
   Preview -bool false \
   Privileges -bool true
+
+CFPreferencesAppSynchronize "com.apple.finder"
 
 ###############################################################################
 # Dock, Dashboard, and hot corners                                            #
@@ -334,6 +363,16 @@ defaults write com.apple.dock wvous-bl-modifier -int 0
 # Set Safari’s home page to `about:blank` for faster loading
 defaults write com.apple.Safari HomePage -string "about:blank"
 
+# Show status bar
+defaults write com.apple.Safari ShowStatusBar -bool true
+
+# Show favorites bar
+defaults write com.apple.Safari ShowFavoritesBar -bool true
+defaults write com.apple.Safari "ShowFavoritesBar-v2" -bool true
+
+# Don't show tab bar
+defaults write com.apple.Safari AlwaysShowTabBar -bool false
+
 # Prevent Safari from opening ‘safe’ files automatically after downloading
 defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
 
@@ -348,8 +387,48 @@ defaults write com.apple.Safari IncludeDevelopMenu -bool true
 defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
 defaults write com.apple.Safari com.apple.Safari.ContentPageGroupIdentifier.WebKit2DeveloperExtrasEnabled -bool true
 
+# Disable Safari’s thumbnail cache for History and Top Sites
+defaults write com.apple.Safari DebugSnapshotsUpdatePolicy -int 2
+
+# Make Safari’s search banners default to Contains instead of Starts With
+defaults write com.apple.Safari FindOnPageMatchesWordStartsOnly -bool false
+
 # Add a context menu item for showing the Web Inspector in web views
 defaults write NSGlobalDomain WebKitDeveloperExtras -bool true
+
+# Warn About Fraudulent Websites
+defaults write com.apple.Safari WarnAboutFraudulentWebsites -bool true
+
+# Privacy settings
+# Website use of location services
+# 0 = Deny without prompting
+# 1 = Prompt for each website once each day
+# 2 = Prompt for each website one time only
+defaults write com.apple.Safari SafariGeolocationPermissionPolicy -int 0
+
+# Do not track
+defaults write com.apple.Safari SendDoNotTrackHTTPHeader -bool true
+
+# Notifications
+# Don't even ask about the push notifications
+defaults write com.apple.Safari CanPromptForPushNotifications -bool false
+
+# Extensions settings
+# Update extensions automatically
+defaults write com.apple.Safari InstallExtensionUpdatesAutomatically -bool true
+
+CFPreferencesAppSynchronize "com.apple.Safari"
+
+# ==============================================
+# Disk Utility
+# ==============================================
+echo "Setting Disk Utility preferences"
+
+# Enable the debug menu in Disk Utility
+defaults write com.apple.DiskUtility DUDebugMenuEnabled -bool true
+defaults write com.apple.DiskUtility advanced-image-options -bool true
+
+CFPreferencesAppSynchronize "com.apple.DiskUtility"
 
 ###############################################################################
 # Mail                                                                        #
@@ -408,14 +487,102 @@ defaults write com.apple.terminal StringEncodings -array 4
 # Activity Monitor                                                            #
 ###############################################################################
 
-# Show the main window when launching Activity Monitor
+# Show main window on launch
 defaults write com.apple.ActivityMonitor OpenMainWindow -bool true
 
-# Visualize CPU usage in the Activity Monitor Dock icon
+# Dock icon = CPU Usage
 defaults write com.apple.ActivityMonitor IconType -int 5
+
+# Mountain Lion: Sort by CPU usage
+defaults write com.apple.ActivityMonitor SortColumn -string "CPUUsage"
+defaults write com.apple.ActivityMonitor SortDirection -int 0
+
+# Mavericks: Add the "% CPU" column to the Disk and Network tabs
+defaults write com.apple.ActivityMonitor "UserColumnsPerTab v4.0" -dict \
+    '0' '( Command, CPUUsage, CPUTime, Threads, IdleWakeUps, PID, UID )' \
+    '1' '( Command, anonymousMemory, Threads, Ports, PID, UID, ResidentSize )' \
+    '2' '( Command, PowerScore, 12HRPower, AppSleep, graphicCard, UID )' \
+    '3' '( Command, bytesWritten, bytesRead, Architecture, PID, UID, CPUUsage )' \
+    '4' '( Command, txBytes, rxBytes, txPackets, rxPackets, PID, UID, CPUUsage )'
+
+# Select the Network tab
+defaults write com.apple.ActivityMonitor SelectedTab -int 4
+
+# Update Frequency: Often (2 sec)
+defaults write com.apple.ActivityMonitor UpdatePeriod -int 2
+
+# Mavericks: Show Data in the Disk graph (instead of IO)
+defaults write com.apple.ActivityMonitor DiskGraphType -int 1
+
+# Mavericks: Show Data in the Network graph (instead of packets)
+defaults write com.apple.ActivityMonitor NetworkGraphType -int 1
 
 # Show all processes in Activity Monitor
 defaults write com.apple.ActivityMonitor ShowCategory -int 0
+
+CFPreferencesAppSynchronize "com.apple.Terminal"
+
+# ==============================================
+# Contacts (Address Book)
+# ==============================================
+echo "Setting Contacts preferences"
+
+# Address format
+defaults write com.apple.AddressBook ABDefaultAddressCountryCode -string "de"
+
+# Display format "Last, First"
+defaults write com.apple.AddressBook ABNameDisplay -int 1
+
+# Sort by last name
+defaults write com.apple.AddressBook ABNameSortingFormat -string "sortingLastName sortingFirstName"
+
+# ==============================================
+# Calendar (iCal)
+# ==============================================
+echo "Setting Calendar preferences"
+
+# Show week numbers (10.8 only)
+defaults write com.apple.iCal "Show Week Numbers" -bool true
+
+# Show 7 days
+defaults write com.apple.iCal "n days of week" -int 7
+
+# Week starts on monday
+defaults write com.apple.iCal "first day of week" -int 1
+
+# Show event times
+defaults write com.apple.iCal "Show time in Month View" -bool true
+
+# ==============================================
+# Disable CD & DVD actions
+# ==============================================
+echo "Setting CD & DVD preferences"
+
+# Disable blank CD automatic action.
+defaults write com.apple.digihub com.apple.digihub.blank.cd.appeared -dict action 1
+
+# Disable music CD automatic action.
+defaults write com.apple.digihub com.apple.digihub.cd.music.appeared -dict action 1
+
+# Disable picture CD automatic action.
+defaults write com.apple.digihub com.apple.digihub.cd.picture.appeared -dict action 1
+
+# Disable blank DVD automatic action.
+defaults write com.apple.digihub com.apple.digihub.blank.dvd.appeared -dict action 1
+
+# Disable video DVD automatic action.
+defaults write com.apple.digihub com.apple.digihub.dvd.video.appeared -dict action 1
+
+# ==============================================
+# Archive Utility
+# ==============================================
+echo "Setting Archive Utility preferences"
+
+# Move archives to trash after extraction
+defaults write com.apple.archiveutility "dearchive-move-after" -string "~/.Trash"
+
+# Don't reveal extracted items
+defaults write com.apple.archiveutility "dearchive-reveal-after" -bool false
 
 ###############################################################################
 # TextEdit                                                                    #
@@ -457,7 +624,7 @@ defaults write com.google.Chrome DisablePrintPreview -bool true
 
 # Restart affected applications if `--no-restart` flag is not present.
 if [[ ! ($* == *--no-restart*) ]]; then
-  for app in "cfprefsd" "Dock" "Finder" "Mail" "SystemUIServer" "Terminal"; do
+  for app in "cfprefsd" "Activity Monitor" "System Preferences" "Safari" "Dock" "Calendar" "Contacts" "Finder" "Dashboard" "Disk Utility" "Mail" "SystemUIServer" "Terminal"; do
     killall "${app}" > /dev/null 2>&1
   done
 fi
