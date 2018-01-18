@@ -3,16 +3,24 @@
 This is a companion repo to [thoughtbot/dotfiles][1] including an install script for oh-my-zsh and for thoughtbot's dotfiles. It is heavily inspired by [Evie's dotfiles](https://github.com/webel/dotfiles)
 
 ## Includes
+
 - Install script for `thoughtbot/dotfiles`
 - config for zshrc (see `thoughtbot/dotfiles` for description on how they treat local dotfiles)
-  - this config is basically the default created by `oh-my-zsh`, although with these plugins: `git` `docker` `docker-comp` `docker` `httpie` `node` `npm` `osx` `sudo`
 
+  - this config is basically the default created by `oh-my-zsh`, although with these plugins: `git` `docker` `brew` `docker-compose` `docker` `httpie` `node` `npm` `osx` `sudo` `zsh-autosuggestions` `history` `history-substring-search`
+
+## Remark
+
+
+Instead invocing directly it is highly recommended to run the  [mac-dev-playbook](https://github.com/MNicks/mac-dev-playbook) as it will install this dotfiles automatically. When installing this dotfiles seperatly as post install step you should one time run `~/.osx.local`.
+   
 ## Install
 - clone the repo
 
       > git clone --recurse-submodules https://github.com/MNicks/dotfiles.git ~/dotfiles-local
 
 - run `INSTALL/install.sh`
+
       > . ~/dotfiles-local/INSTALL/install.sh
 
   + sets default shell to `zsh`

@@ -1,5 +1,6 @@
 oh-my-zsh
 node_modules
+fonts
 
 # Don't ignore gitignore
 !.gitignore

@@ -18,6 +18,11 @@ brew install zsh
 sudo echo $(which /usr/local/bin/zsh-*) >> /etc/shells
 chsh -s $(which /usr/local/bin/zsh-*)
 
+# Install additional ZSH plugins
+brew install zsh-completions
+brew install zsh-autosuggestions
+brew install zsh-syntax-highlighting
+
 # Install rcm for dotfile handling a'la thoughtbot
 brew tap thoughtbot/formulae
 brew install rcm
